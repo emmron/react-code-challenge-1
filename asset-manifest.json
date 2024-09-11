@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/react-code-challenge-1/static/css/main.5db08464.css",
+    "main.js": "/react-code-challenge-1/static/js/main.ed1627ea.js",
+    "static/js/453.50de857a.chunk.js": "/react-code-challenge-1/static/js/453.50de857a.chunk.js",
+    "index.html": "/react-code-challenge-1/index.html",
+    "main.5db08464.css.map": "/react-code-challenge-1/static/css/main.5db08464.css.map",
+    "main.ed1627ea.js.map": "/react-code-challenge-1/static/js/main.ed1627ea.js.map",
+    "453.50de857a.chunk.js.map": "/react-code-challenge-1/static/js/453.50de857a.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5db08464.css",
+    "static/js/main.ed1627ea.js"
+  ]
+}
