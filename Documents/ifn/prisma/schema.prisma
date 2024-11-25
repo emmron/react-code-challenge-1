@@ -1,0 +1,28 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma"
+}
+
+model FuneralNotice {
+  id          String   @id @default(cuid())
+  name        String
+  dateOfDeath DateTime?
+  funeralDate DateTime?
+  location    String?
+  community   String?
+  source      String   // e.g., "facebook", "instagram", "website"
+  sourceUrl   String?
+  imageUrl    String?
+  details     String?  // Additional details structured by GPT
+  validated   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([funeralDate])
+  @@index([location])
+  @@index([community])
+} 

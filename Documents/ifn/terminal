@@ -1,0 +1,5 @@
+npx create-remix@latest indigenous-funeral-notices
+cd indigenous-funeral-notices
+npm install @prisma/client cheerio puppeteer openai bull date-fns
+npm install -D prisma @types/node @types/react @types/cheerio @types/bull
+npm install @remix-run/node @remix-run/react
