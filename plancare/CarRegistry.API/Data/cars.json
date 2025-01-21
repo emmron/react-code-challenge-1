@@ -1,0 +1,102 @@
+{
+  "cars": [
+    {
+      "id": 1,
+      "make": "Tesla",
+      "model": "Model S",
+      "year": 2023,
+      "registrationExpiry": "2024-12-31"
+    },
+    {
+      "id": 2,
+      "make": "BMW",
+      "model": "M5",
+      "year": 2022,
+      "registrationExpiry": "2023-12-31"
+    },
+    {
+      "id": 3,
+      "make": "Porsche",
+      "model": "911 GT3",
+      "year": 2023,
+      "registrationExpiry": "2024-08-31"
+    },
+    {
+      "id": 4,
+      "make": "Mercedes",
+      "model": "AMG GT",
+      "year": 2022,
+      "registrationExpiry": "2023-11-30"
+    },
+    {
+      "id": 5,
+      "make": "Audi",
+      "model": "RS7",
+      "year": 2023,
+      "registrationExpiry": "2024-05-31"
+    },
+    {
+      "id": 7,
+      "make": "Ferrari",
+      "model": "F8 Tributo",
+      "year": 2023,
+      "registrationExpiry": "2024-09-30"
+    },
+    {
+      "id": 8,
+      "make": "McLaren",
+      "model": "720S",
+      "year": 2022,
+      "registrationExpiry": "2023-12-28"
+    },
+    {
+      "id": 9,
+      "make": "Aston Martin",
+      "model": "DBS",
+      "year": 2023,
+      "registrationExpiry": "2024-06-30"
+    },
+    {
+      "id": 10,
+      "make": "Bentley",
+      "model": "Continental GT",
+      "year": 2022,
+      "registrationExpiry": "2024-01-31"
+    },
+    {
+      "id": 11,
+      "make": "Rolls-Royce",
+      "model": "Phantom",
+      "year": 2023,
+      "registrationExpiry": "2024-10-31"
+    },
+    {
+      "id": 12,
+      "make": "Maserati",
+      "model": "MC20",
+      "year": 2022,
+      "registrationExpiry": "2023-12-15"
+    },
+    {
+      "id": 13,
+      "make": "Tesla",
+      "model": "Model X",
+      "year": 2023,
+      "registrationExpiry": "2024-07-31"
+    },
+    {
+      "id": 14,
+      "make": "Porsche",
+      "model": "Taycan",
+      "year": 2022,
+      "registrationExpiry": "2024-03-31"
+    },
+    {
+      "id": 15,
+      "make": "BMW",
+      "model": "i8",
+      "year": 2023,
+      "registrationExpiry": "2024-04-30"
+    }
+  ]
+} 
