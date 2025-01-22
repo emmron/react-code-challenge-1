@@ -1,5 +1,9 @@
 {
   "dependencies": {
+    "signalr1": {
+      "type": "signalr.azure",
+      "connectionId": "Azure:SignalR:ConnectionString"
+    },
     "appInsights1": {
       "type": "appInsights.sdk",
       "connectionId": "APPLICATIONINSIGHTS_CONNECTION_STRING"

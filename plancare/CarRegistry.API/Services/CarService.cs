@@ -1,18 +1,27 @@
-using Microsoft.AspNetCore.SignalR;
-using CarRegistry.API.Hubs;
+using System.Text.Json;
 using CarRegistry.API.Models;
 
 namespace CarRegistry.API.Services;
 
-public class CarService : BackgroundService
+public class CarService
 {
-    private readonly IHubContext<CarHub> _hubContext;
     private readonly List<Car> _cars;
 
-    public CarService(IHubContext<CarHub> hubContext)
+    public CarService()
     {
-        _hubContext = hubContext;
-        _cars = GenerateInitialCars();
+        _cars = LoadCarsFromJson();
+    }
+
+    private List<Car> LoadCarsFromJson()
+    {
+        var jsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "cars.json");
+        if (File.Exists(jsonPath))
+        {
+            var jsonString = File.ReadAllText(jsonPath);
+            var data = JsonSerializer.Deserialize<CarData>(jsonString);
+            return data?.Cars ?? GenerateInitialCars();
+        }
+        return GenerateInitialCars();
     }
 
     private List<Car> GenerateInitialCars()
@@ -30,37 +39,49 @@ public class CarService : BackgroundService
         };
     }
 
-    public IEnumerable<Car> GetCars(string? make = null)
+    public CarStats GetCarStats(IEnumerable<Car> cars)
     {
-        if (string.IsNullOrWhiteSpace(make))
-            return _cars;
-        
-        return _cars.Where(c => c.Make.Contains(make, StringComparison.OrdinalIgnoreCase));
+        return new CarStats
+        {
+            TotalCars = cars.Count(),
+            ExpiredCount = cars.Count(c => !c.IsRegistrationValid),
+            ValidCount = cars.Count(c => c.IsRegistrationValid),
+            ExpiringCount = cars.Count(c => c.DaysUntilExpiry is >= 0 and < 30),
+            AverageYear = cars.Average(c => c.Year),
+            UniqueMakes = cars.Select(c => c.Make).Distinct().Count(),
+            MostCommonMake = cars.GroupBy(c => c.Make)
+                                .OrderByDescending(g => g.Count())
+                                .First().Key
+        };
     }
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    public IEnumerable<Car> GetCars(string? make = null, string? status = null)
     {
-        using var timer = new PeriodicTimer(TimeSpan.FromSeconds(10));
+        var query = _cars.AsEnumerable();
 
-        while (await timer.WaitForNextTickAsync(stoppingToken))
-        {
-            var expiredCount = _cars.Count(c => c.RegistrationExpiry < DateTime.Now);
-            var validCount = _cars.Count(c => c.RegistrationExpiry >= DateTime.Now);
-            
-            var update = new RegistrationUpdate
-            {
-                Timestamp = DateTime.Now.ToString("O"),
-                ExpiredCount = expiredCount,
-                ValidCount = validCount,
-                TotalCars = _cars.Count
-            };
+        if (!string.IsNullOrWhiteSpace(make))
+            query = query.Where(c => c.Make.Contains(make, StringComparison.OrdinalIgnoreCase));
 
-            await _hubContext.Clients.All.SendAsync("ReceiveRegistrationUpdate", update, stoppingToken);
-        }
+        if (!string.IsNullOrWhiteSpace(status))
+            query = query.Where(c => c.Status.Equals(status, StringComparison.OrdinalIgnoreCase));
+
+        return query.OrderByDescending(c => c.IsRegistrationValid)
+                   .ThenBy(c => c.DaysUntilExpiry);
     }
 }
 
 public class CarData
 {
     public List<Car> Cars { get; set; } = new();
+}
+
+public class CarStats
+{
+    public int TotalCars { get; set; }
+    public int ExpiredCount { get; set; }
+    public int ValidCount { get; set; }
+    public int ExpiringCount { get; set; }
+    public double AverageYear { get; set; }
+    public int UniqueMakes { get; set; }
+    public string MostCommonMake { get; set; } = string.Empty;
 } 
