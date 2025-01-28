@@ -8,7 +8,7 @@ public class CarResponse
 {
     public IEnumerable<Car> Cars { get; set; } = new List<Car>();
     public CarStats Stats { get; set; } = new();
-    public string Timestamp { get; set; } = DateTime.UtcNow.ToString("O");
+    public string Timestamp { get; set; } = DateTime.UtcNow.AddHours(8).ToString("O"); // Perth time
 }
 
 [ApiController]
@@ -23,16 +23,16 @@ public class CarsController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetCars([FromQuery] string? make = null)
+    public IActionResult GetCars([FromQuery] string? make = null, [FromQuery] string? status = null)
     {
-        var cars = _carService.GetCars(make);
+        var cars = _carService.GetCars(make, status);
         var stats = _carService.GetCarStats(cars);
         
         return Ok(new CarResponse 
         { 
             Cars = cars,
             Stats = stats,
-            Timestamp = DateTime.UtcNow.ToString("O")
+            Timestamp = DateTime.UtcNow.AddHours(8).ToString("O") // Perth time
         });
     }
 } 

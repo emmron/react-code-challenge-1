@@ -3,19 +3,21 @@ using CarRegistry.API.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddHttpClient();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Simple CORS - just allow frontend
+// Add CORS
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
     {
-        builder.WithOrigins("http://localhost:3000")
+        builder.SetIsOriginAllowed(_ => true) // Allow any origin in development
                .AllowAnyMethod()
-               .AllowAnyHeader();
+               .AllowAnyHeader()
+               .WithExposedHeaders("Content-Disposition"); // For file downloads
     });
 });
 
@@ -31,9 +33,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Basic middleware
+// Use CORS before routing
 app.UseCors();
-app.UseRouting();
+
+app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();
